@@ -1,12 +1,18 @@
 import express from 'express';
+import { PORT } from './config/env';
+import { connectDB } from './config/database';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
   res.json({ message: "Karhub API running!" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+async function startServer() {
+  await connectDB();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+startServer();
