@@ -4,7 +4,7 @@ import { connectDB } from './config/database';
 
 const app = express();
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.json({ message: "Karhub API running!" });
 });
 
