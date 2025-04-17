@@ -9,8 +9,11 @@ import {
   SpotifyPlaylistTrack
 } from '../types/SpotifyService.types';
 
+import { logger } from '../utils/logger';
+
 export async function searchPlaylist(query: string, token: string): Promise<SpotifyPlaylistResult | null> {
 
+  logger.info({ query }, 'Buscando playlist no Spotify');
   try {
     const searchResponse = await axios.get<SpotifySearchApiResponse>(SPOTIFY_SEARCH_URL, {
       headers: {
@@ -24,9 +27,11 @@ export async function searchPlaylist(query: string, token: string): Promise<Spot
     });
     const items = searchResponse.data.playlists?.items;
     if (!items || items.length === 0) {
+      logger.warn({ query }, 'Nenhuma playlist encontrada no Spotify');
       return null;
     }
     const playlist = items[0];
+    logger.info({ query, playlist: playlist.name }, 'Playlist encontrada no Spotify');
 
     const tracksUrl = `https://api.spotify.com/v1/playlists/${playlist.id}/tracks?limit=5`;
     let tracks: SpotifyPlaylistTrack[] = [];
@@ -46,7 +51,9 @@ export async function searchPlaylist(query: string, token: string): Promise<Spot
           };
         })
         .filter(Boolean) as SpotifyPlaylistTrack[];
+      logger.info({ playlist: playlist.name, tracksCount: tracks.length }, 'Tracks da playlist obtidas com sucesso');
     } catch (trackErr) {
+      logger.error({ playlist: playlist.name, trackErr }, 'Erro ao buscar tracks da playlist');
     }
 
     return {
@@ -55,6 +62,7 @@ export async function searchPlaylist(query: string, token: string): Promise<Spot
     };
 
   } catch (error) {
+    logger.error({ query, error }, 'Erro ao buscar playlist no Spotify');
     return null;
   }
 }
