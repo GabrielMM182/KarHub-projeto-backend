@@ -2,12 +2,14 @@ import { Request, Response } from 'express';
 import * as BeerService from '../services/BeerService';
 import { handleNotFound } from '../utils/handleNotFound';
 import { validateTemperature } from '../utils/validateTemperature';
+import { getBeerRecommendation } from '../services/RecommendationService';
 
 export async function getRecommendation(req: Request, res: Response): Promise<void> {
     const { temperature } = req.body;
     if (validateTemperature(temperature, res)) return;
-    const foundBeer = await BeerService.findBeerStyleByTemperature(temperature);
-    res.status(200).json({ beerStyle: foundBeer });
+    const token = res.locals.spotifyToken;
+    const result = await getBeerRecommendation(temperature, token);
+    res.status(200).json(result);
 }
 
 

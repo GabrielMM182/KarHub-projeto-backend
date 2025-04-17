@@ -3,6 +3,7 @@ import * as BeerController from '../controllers/BeerController';
 import { asyncHandler } from '../utils/asyncHandler';
 import { validateDto } from '../middlewares/validateDto';
 import { BeerCreateSchema, BeerUpdateSchema } from '../dtos/beer.dto';
+import { spotifyAuth } from '../middlewares/spotifyAuth';
 
 const router = Router();
 
@@ -11,6 +12,6 @@ router.get('/', asyncHandler(BeerController.getAll));
 router.get('/:id', asyncHandler(BeerController.getOne));
 router.put('/:id', validateDto(BeerUpdateSchema), asyncHandler(BeerController.update));
 router.delete('/:id', asyncHandler(BeerController.remove));
-router.post('/recommendation', asyncHandler(BeerController.getRecommendation));
+router.post('/recommendation', spotifyAuth, asyncHandler(BeerController.getRecommendation));
 
 export default router;
