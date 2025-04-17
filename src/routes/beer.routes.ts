@@ -11,5 +11,6 @@ router.get('/', asyncHandler(BeerController.getAll));
 router.get('/:id', asyncHandler(BeerController.getOne));
 router.put('/:id', validateDto(BeerUpdateSchema), asyncHandler(BeerController.update));
 router.delete('/:id', asyncHandler(BeerController.remove));
+router.post('/recommendation', asyncHandler(BeerController.getRecommendation));
 
 export default router;

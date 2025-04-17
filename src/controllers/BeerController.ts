@@ -1,5 +1,15 @@
 import { Request, Response } from 'express';
 import * as BeerService from '../services/BeerService';
+import { handleNotFound } from '../utils/handleNotFound';
+import { validateTemperature } from '../utils/validateTemperature';
+
+export async function getRecommendation(req: Request, res: Response): Promise<void> {
+    const { temperature } = req.body;
+    if (validateTemperature(temperature, res)) return;
+    const foundBeer = await BeerService.findBeerStyleByTemperature(temperature);
+    res.status(200).json({ beerStyle: foundBeer });
+}
+
 
 export async function create(req: Request, res: Response): Promise<void> {
   const beer = await BeerService.createBeer(req.body);
@@ -11,29 +21,21 @@ export async function getAll(req: Request, res: Response): Promise<void> {
   res.status(200).json(beers);
 }
 
+
 export async function getOne(req: Request, res: Response): Promise<void> {
   const beer = await BeerService.getBeerById(req.params.id);
-  if (!beer) {
-    res.status(404).json({ error: 'Beer not found' });
-    return;
-  }
+  if (handleNotFound(beer, res, 'Beer')) return;
   res.status(200).json(beer);
 }
 
 export async function update(req: Request, res: Response): Promise<void> {
   const beer = await BeerService.updateBeer(req.params.id, req.body);
-  if (!beer) {
-    res.status(404).json({ error: 'Beer not found' });
-    return;
-  }
+  if (handleNotFound(beer, res, 'Beer')) return;
   res.status(200).json(beer);
 }
 
 export async function remove(req: Request, res: Response): Promise<void> {
   const beer = await BeerService.deleteBeer(req.params.id);
-  if (!beer) {
-    res.status(404).json({ error: 'Beer not found' });
-    return;
-  }
+  if (handleNotFound(beer, res, 'Beer')) return;
   res.status(204).send();
 }
