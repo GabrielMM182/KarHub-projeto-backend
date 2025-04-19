@@ -1,19 +1,21 @@
 version: '3.8'
 services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    env_file: .env
-    depends_on:
-      - mongo
-    volumes:
-      - ./src:/usr/src/app/src 
   mongo:
-    image: mongo:latest
+    image: mongo:6.0
+    container_name: mongo
+    restart: always
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: karhub
     volumes:
-      - mongo-data:/data/db
+      - mongo_data:/data/db
+    networks:
+      - karhub-net
+
 volumes:
-  mongo-data: {}
+  mongo_data:
+
+networks:
+  karhub-net:
+    driver: bridge

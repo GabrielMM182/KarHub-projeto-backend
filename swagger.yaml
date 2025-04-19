@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: Karhub Beer API
+  description: |
+    API para gerenciamento de estilos de cerveja, recomendação baseada em temperatura e integração com playlists do Spotify.
+    
+    **Campos principais:**
+      - `name`: Nome da cerveja (único).
+      - `minTemp`: Temperatura mínima ideal (°C).
+      - `maxTemp`: Temperatura máxima ideal (°C).
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local server
+paths:
+  /beers:
+    post:
+      summary: Cria um novo estilo de cerveja
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BeerCreate'
+            example:
+              name: Duff
+              minTemp: -4
+              maxTemp: 8
+      responses:
+        '201':
+          description: Cerveja criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beer'
+        '400':
+          description: Dados inválidos ou nome duplicado
+    get:
+      summary: Lista todas as cervejas cadastradas
+      responses:
+        '200':
+          description: Lista de cervejas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Beer'
+  /beers/{id}:
+    get:
+      summary: Busca uma cerveja pelo ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cerveja encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beer'
+        '404':
+          description: Cerveja não encontrada
+    put:
+      summary: Atualiza um estilo de cerveja
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BeerUpdate'
+            example:
+              name: Duff beer Extra
+              minTemp: -2
+              maxTemp: 10
+      responses:
+        '200':
+          description: Cerveja atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beer'
+        '400':
+          description: Dados inválidos ou nome duplicado
+        '404':
+          description: Cerveja não encontrada
+    delete:
+      summary: Remove uma cerveja pelo ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Removido com sucesso
+        '404':
+          description: Cerveja não encontrada
+  /beers/recommendation:
+    post:
+      summary: Recomenda um estilo de cerveja e playlist baseado na temperatura
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                temperature:
+                  type: number
+                  description: Temperatura atual (°C)
+              required:
+                - temperature
+            example:
+              temperature: 6
+      responses:
+        '200':
+          description: Estilo recomendado e playlist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beerStyle:
+                    type: string
+                    description: Nome do estilo recomendado
+                  playlist:
+                    type: object
+                    description: Playlist recomendada
+        '400':
+          description: Corpo inválido
+components:
+  schemas:
+    Beer:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID da cerveja
+        name:
+          type: string
+          description: Nome da cerveja (único)
+        minTemp:
+          type: number
+          description: Temperatura mínima ideal (°C)
+        maxTemp:
+          type: number
+          description: Temperatura máxima ideal (°C)
+      required:
+        - name
+        - minTemp
+        - maxTemp
+    BeerCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nome da cerveja (único)
+        minTemp:
+          type: number
+          description: Temperatura mínima ideal (°C)
+        maxTemp:
+          type: number
+          description: Temperatura máxima ideal (°C)
+      required:
+        - name
+        - minTemp
+        - maxTemp
+    BeerUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Novo nome da cerveja (único)
+        minTemp:
+          type: number
+          description: Nova temperatura mínima ideal (°C)
+        maxTemp:
+          type: number
+          description: Nova temperatura máxima ideal (°C)
