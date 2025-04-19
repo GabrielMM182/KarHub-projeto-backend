@@ -1,6 +1,7 @@
 import express from 'express';
 import { PORT } from './config/env';
 import { connectDB } from './config/database';
+import { logger } from './utils/logger';
 
 import beerRouter from './routes/beer.routes';
 import { errorHandler } from './middlewares/errorHandler';
@@ -17,7 +18,7 @@ app.get('/', (_, res) => {
 async function startServer() {
   await connectDB();
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    logger.info(`Server running on port ${PORT}`);
   });
   app.use(errorHandler);
 }

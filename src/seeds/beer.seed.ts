@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { Beer } from '../models/Beer.schema';
+import { logger } from '../utils/logger';
 
 dotenv.config();
 
@@ -24,10 +25,10 @@ async function seed() {
     await mongoose.connect(process.env.MONGODB_URI);
     await Beer.deleteMany({});
     await Beer.insertMany(beers);
-    console.log('Beers seeded successfully!');
+    logger.info('Beers seeded successfully!');
     process.exit(0);
   } catch (err) {
-    console.error(err);
+    logger.error({ err }, 'Erro ao realizar seed de cervejas');
     process.exit(1);
   }
 }
