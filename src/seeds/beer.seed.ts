@@ -28,7 +28,7 @@ async function seed() {
     logger.info('Beers seeded successfully!');
     process.exit(0);
   } catch (err) {
-    logger.error({ err }, 'Erro ao realizar seed de cervejas');
+    logger.error({ err }, 'Error to start seeds');
     process.exit(1);
   }
 }

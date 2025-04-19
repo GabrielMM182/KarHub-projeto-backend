@@ -3,12 +3,12 @@ import { logger } from '../utils/logger';
 
 export async function createBeer(data: { name: string; minTemp: number; maxTemp: number }): Promise<IBeer> {
   try {
-    logger.info({ data }, 'Criando nova cerveja');
+    logger.info({ data }, 'Creating new beer');
     const beer = await Beer.create(data);
-    logger.info({ beer }, 'Cerveja criada com sucesso');
+    logger.info({ beer }, 'Beer created successfully');
     return beer;
   } catch (error) {
-    logger.error({ data, error }, 'Erro ao criar cerveja');
+    logger.error({ data, error }, 'Error to create beer');
     throw error;
   }
 }
@@ -17,7 +17,7 @@ export async function getAllBeers(): Promise<IBeer[]> {
   try {
     return await Beer.find();
   } catch (error) {
-    logger.error({ error }, 'Erro ao buscar todas as cervejas');
+    logger.error({ error }, 'Error to get all beers');
     throw error;
   }
 }
@@ -26,7 +26,7 @@ export async function getBeerById(id: string): Promise<IBeer | null> {
   try {
     return await Beer.findById(id);
   } catch (error) {
-    logger.error({ id, error }, 'Erro ao buscar cerveja por ID');
+    logger.error({ id, error }, 'Error to get beer by ID');
     throw error;
   }
 }
@@ -35,7 +35,7 @@ export async function updateBeer(id: string, data: Partial<IBeer>): Promise<IBee
   try {
     return await Beer.findByIdAndUpdate(id, data, { new: true });
   } catch (error) {
-    logger.error({ id, data, error }, 'Erro ao atualizar cerveja');
+    logger.error({ id, data, error }, 'Error to update beer');
     throw error;
   }
 }
@@ -44,14 +44,14 @@ export async function deleteBeer(id: string): Promise<IBeer | null> {
   try {
     return await Beer.findByIdAndDelete(id);
   } catch (error) {
-    logger.error({ id, error }, 'Erro ao deletar cerveja');
+    logger.error({ id, error }, 'Error to delete beer');
     throw error;
   }
 }
 
 export async function findBeerStyleByTemperature(temperature: number): Promise<IBeer | null> {
   try {
-    logger.info({ temperature }, 'Buscando estilo de cerveja pela temperatura');
+    logger.info({ temperature }, 'Finding beer style by temperature');
     const result = await Beer.aggregate([
       {
         $addFields: {

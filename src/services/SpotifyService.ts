@@ -13,7 +13,7 @@ import { logger } from '../utils/logger';
 
 export async function searchPlaylist(query: string, token: string): Promise<SpotifyPlaylistResult | null> {
 
-  logger.info({ query }, 'Buscando playlist no Spotify');
+  logger.info({ query }, 'Searching playlist in Spotify');
   try {
     const searchResponse = await axios.get<SpotifySearchApiResponse>(SPOTIFY_SEARCH_URL, {
       headers: {
@@ -27,11 +27,11 @@ export async function searchPlaylist(query: string, token: string): Promise<Spot
     });
     const items = searchResponse.data.playlists?.items;
     if (!items || items.length === 0) {
-      logger.warn({ query }, 'Nenhuma playlist encontrada no Spotify');
+      logger.warn({ query }, 'No playlist found in Spotify');
       return null;
     }
     const playlist = items[0];
-    logger.info({ query, playlist: playlist.name }, 'Playlist encontrada no Spotify');
+    logger.info({ query, playlist: playlist.name }, 'Playlist found in Spotify');
 
     const tracksUrl = `https://api.spotify.com/v1/playlists/${playlist.id}/tracks?limit=5`;
     let tracks: SpotifyPlaylistTrack[] = [];
@@ -51,9 +51,9 @@ export async function searchPlaylist(query: string, token: string): Promise<Spot
           };
         })
         .filter(Boolean) as SpotifyPlaylistTrack[];
-      logger.info({ playlist: playlist.name, tracksCount: tracks.length }, 'Tracks da playlist obtidas com sucesso');
+      logger.info({ playlist: playlist.name, tracksCount: tracks.length }, 'Tracks of the playlist obtained successfully');
     } catch (trackErr) {
-      logger.error({ playlist: playlist.name, trackErr }, 'Erro ao buscar tracks da playlist');
+      logger.error({ playlist: playlist.name, trackErr }, 'Error to get tracks of the playlist');
     }
 
     return {
@@ -62,7 +62,7 @@ export async function searchPlaylist(query: string, token: string): Promise<Spot
     };
 
   } catch (error) {
-    logger.error({ query, error }, 'Erro ao buscar playlist no Spotify');
+    logger.error({ query, error }, 'Error to search playlist in Spotify');
     return null;
   }
 }

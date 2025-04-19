@@ -13,7 +13,7 @@ export function validateDto<T>(schema: ZodSchema<T>): RequestHandler {
           if (err.code === "invalid_type" && err.path.length > 0) {
             return {
               field: err.path.join('.'),
-              message: `O campo '${err.path.join('.')}' está ausente ou inválido.`
+              message: `The field '${err.path.join('.')}' is missing or invalid.`
             };
           }
           return {
@@ -23,7 +23,7 @@ export function validateDto<T>(schema: ZodSchema<T>): RequestHandler {
         });
 
         res.status(400).json({
-          message: "Erro de validação: um ou mais campos não seguem o schema esperado. Verifique se o corpo da requisição está correto.",
+          message: "Validation error: one or more fields do not follow the expected schema. Verify if the request body is correct.",
           errors: customErrors
         });
       } else {

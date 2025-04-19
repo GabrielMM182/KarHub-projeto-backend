@@ -11,7 +11,7 @@ const mockedSearchPlaylist = searchPlaylist as jest.Mock;
 describe('RecommendationService', () => {
   afterEach(() => jest.clearAllMocks());
 
-  it('deve retornar recomendação de cerveja e playlist', async () => {
+  it('should return beer recommendation and playlist', async () => {
     mockedFindBeerStyleByTemperature.mockResolvedValueOnce({ name: 'IPA' });
     mockedSearchPlaylist.mockResolvedValueOnce({ name: 'IPA Playlist', tracks: ['track1', 'track2'] });
 
@@ -22,22 +22,22 @@ describe('RecommendationService', () => {
     });
   });
 
-  it('deve retornar mensagem se não encontrar estilo de cerveja', async () => {
+  it('should return message if no beer style found', async () => {
     mockedFindBeerStyleByTemperature.mockResolvedValueOnce(null);
     const result = await getBeerRecommendation(99, 'fake-token');
     expect(result).toEqual({
       beerStyle: null,
-      playlist: { message: 'Nenhum estilo de cerveja encontrado para essa temperatura.' }
+      playlist: { message: 'No beer style found for this temperature.' }
     });
   });
 
-  it('deve retornar mensagem se não encontrar playlist', async () => {
+  it('should return message if no playlist found', async () => {
     mockedFindBeerStyleByTemperature.mockResolvedValueOnce({ name: 'Lager' });
     mockedSearchPlaylist.mockResolvedValueOnce(null);
     const result = await getBeerRecommendation(15, 'fake-token');
     expect(result).toEqual({
       beerStyle: 'Lager',
-      playlist: { message: 'Nenhuma playlist encontrada para este estilo de cerveja.' }
+      playlist: { message: 'No playlist found for this beer style.' }
     });
   });
 });

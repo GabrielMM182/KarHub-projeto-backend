@@ -8,7 +8,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('SpotifyService', () => {
   describe('searchPlaylist', () => {
-    it('deve retornar a playlist esperada', async () => {
+    it('should return the expected playlist', async () => {
       const mockResponse: AxiosResponse = {
         data: { playlists: { items: [{ name: 'Playlist', tracks: [] }] } },
         status: 200,
@@ -20,7 +20,7 @@ describe('SpotifyService', () => {
       const playlist = await searchPlaylist('rock', 'token');
       expect(playlist).toEqual({ name: 'Playlist', tracks: [] });
     });
-    it('deve retornar null se não encontrar playlists', async () => {
+    it('should return null if no playlists are found', async () => {
       const emptyResponse: AxiosResponse = {
         data: { playlists: { items: [] } },
         status: 200,
@@ -32,8 +32,8 @@ describe('SpotifyService', () => {
       const playlist = await searchPlaylist('abc', 'token');
       expect(playlist).toBeNull();
     });
-    it('deve retornar null em caso de erro', async () => {
-      mockedAxios.get.mockRejectedValueOnce(new Error('erro'));
+    it('should return null in case of error', async () => {
+      mockedAxios.get.mockRejectedValueOnce(new Error('error'));
       const playlist = await searchPlaylist('token', 'rock');
       expect(playlist).toBeNull();
     });

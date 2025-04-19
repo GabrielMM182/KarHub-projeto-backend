@@ -3,11 +3,11 @@ import { searchPlaylist } from './SpotifyService';
 import { logger } from '../utils/logger';
 
 export async function getBeerRecommendation(temperature: number, token: string) {
-    logger.info({ temperature }, 'Iniciando recomendação de cerveja');
+    logger.info({ temperature }, 'Starting beer recommendation');
     const foundBeer = await BeerService.findBeerStyleByTemperature(temperature);
     if (!foundBeer) {
-        logger.warn({ temperature }, 'Nenhum estilo de cerveja encontrado');
-        return { beerStyle: null, playlist: { message: 'Nenhum estilo de cerveja encontrado para essa temperatura.' } };
+        logger.warn({ temperature }, 'No beer style found');
+        return { beerStyle: null, playlist: { message: 'No beer style found for this temperature.' } };
     }
 
     let playlist = null;
@@ -19,16 +19,16 @@ export async function getBeerRecommendation(temperature: number, token: string) 
                     name: playlistResult.name,
                     tracks: playlistResult.tracks
                 };
-                logger.info({ beer: foundBeer.name, playlist: playlistResult.name }, 'Playlist encontrada');
+                logger.info({ beer: foundBeer.name, playlist: playlistResult.name }, 'Playlist found');
             } else {
-                logger.warn({ beer: foundBeer.name }, 'Nenhuma playlist encontrada');
+                logger.warn({ beer: foundBeer.name }, 'No playlist found');
             }
         } catch (err) {
-            logger.error({ beer: foundBeer.name, err }, 'Erro ao buscar playlist');
+            logger.error({ beer: foundBeer.name, err }, 'Error to search playlist');
         }
     }
     return {
         beerStyle: foundBeer.name,
-        playlist: playlist ?? { message: 'Nenhuma playlist encontrada para este estilo de cerveja.' }
+        playlist: playlist ?? { message: 'No playlist found for this beer style.' }
     };
 }

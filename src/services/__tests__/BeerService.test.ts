@@ -13,7 +13,7 @@ describe('BeerService - findBeerStyleByTemperature', () => {
     mockAggregate.mockReset();
   });
 
-  it('deve retornar a cerveja correta com base na temperatura', async () => {
+  it('should return the correct beer with base on temperature', async () => {
     mockAggregate.mockResolvedValueOnce([
       { name: 'Pilsen', minTemp: 4, maxTemp: 6 }
     ]);
@@ -21,14 +21,14 @@ describe('BeerService - findBeerStyleByTemperature', () => {
     expect(result).toEqual({ name: 'Pilsen', minTemp: 4, maxTemp: 6 });
   });
 
-  it('deve retornar null se nenhuma cerveja for encontrada', async () => {
+  it('should return null if no beer is found', async () => {
     mockAggregate.mockResolvedValueOnce([]);
     const result = await findBeerStyleByTemperature(99);
     expect(result).toBeNull();
   });
 
-  it('deve propagar erro se aggregate lançar erro', async () => {
-    mockAggregate.mockRejectedValueOnce(new Error('erro'));
-    await expect(findBeerStyleByTemperature(1)).rejects.toThrow('erro');
+  it('should propagate error if aggregate throws error', async () => {
+    mockAggregate.mockRejectedValueOnce(new Error('error'));
+    await expect(findBeerStyleByTemperature(1)).rejects.toThrow('error');
   });
 });
