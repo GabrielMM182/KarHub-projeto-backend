@@ -19,9 +19,9 @@ async function startServer() {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-
-  // Middleware de erro global
   app.use(errorHandler);
 }
 
 startServer();
+
+export default app;
