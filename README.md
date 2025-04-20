@@ -48,8 +48,6 @@ PORT=3000
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
 LOG_LEVEL=info
-MONGODB_URI_PROD=mongodb+srv://<username>:<password>@<cluster-url>/karhub?retryWrites=true&w=majority
-NODE_ENV=production
 ```
 
 ### Instalando dependências
@@ -76,7 +74,7 @@ Você pode testar a API já em produção pelo seguinte link:
 
 - **Base URL:** [https://karhub-projeto-backend.onrender.com](https://karhub-projeto-backend.onrender.com)
 
-Todos os endpoints funcionam normalmente, e a API está conectada a um banco de dados MongoDB Atlas online.
+Todos os endpoints funcionam normalmente, e a API está conectada a um banco de dados MongoDB Atlas online (por conta de ser free tier do render pode demorar alguns segundos até iniciar a api).
 
 ---
 

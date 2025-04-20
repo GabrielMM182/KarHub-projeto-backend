@@ -1,14 +1,13 @@
 import mongoose from 'mongoose';
-import { MONGODB_URI, MONGODB_URI_PROD } from './env';
+import { MONGODB_URI } from './env';
 import { logger } from '../utils/logger';
-
-const uri = process.env.NODE_ENV === 'production' && MONGODB_URI_PROD
-  ? MONGODB_URI_PROD
-  : MONGODB_URI;
 
 export async function connectDB() {
   try {
-    await mongoose.connect(uri);
+    if (!MONGODB_URI) {
+      throw new Error('MONGODB_URI not found look again in .env');
+    }
+    await mongoose.connect(MONGODB_URI);
     logger.info('MongoDB connected successfully!');
   } catch (error) {
     logger.error({ err: error }, 'Error to connect to MongoDB');
