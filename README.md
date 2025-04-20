@@ -25,11 +25,11 @@
 
 <h2 id="started">🚀 Getting started</h2>
 
-### Prerequisites
+### Pre requisites
 
 - [NodeJS](https://nodejs.org/)
 - [Git](https://git-scm.com/)
-- [Docker](https://www.docker.com/) (opcional, para rodar MongoDB facilmente)
+- [Docker](https://www.docker.com/) 
 
 ### Cloning
 
@@ -47,6 +47,9 @@ MONGODB_URI=mongodb://localhost:27017/karhub
 PORT=3000
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+LOG_LEVEL=info
+MONGODB_URI_PROD=mongodb+srv://<username>:<password>@<cluster-url>/karhub?retryWrites=true&w=majority
+NODE_ENV=production
 ```
 
 ### Instalando dependências
@@ -66,6 +69,16 @@ docker-compose up -d
 ```bash
 npm run dev
 ```
+
+### Testando a API Online
+
+Você pode testar a API já em produção pelo seguinte link:
+
+- **Base URL:** [https://karhub-projeto-backend.onrender.com](https://karhub-projeto-backend.onrender.com)
+
+Todos os endpoints funcionam normalmente, e a API está conectada a um banco de dados MongoDB Atlas online.
+
+---
 
 ### Rodando as seeds
 
@@ -97,7 +110,7 @@ npm run test:integration
 
 Acesse a documentação interativa em [http://localhost:3000/docs](http://localhost:3000/docs) após iniciar a aplicação.
 
-A documentação é gerada automaticamente a partir do arquivo `swagger.yaml` usando a biblioteca `swagger-ui-express`. Todas as rotas e exemplos seguem o padrão definido no YAML e são atualizadas conforme a API evolui.
+A documentação é gerada automaticamente a partir do arquivo `swagger.yaml`
 
 ---
 
