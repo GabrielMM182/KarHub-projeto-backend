@@ -6,14 +6,10 @@
     "rootDir": "./src",
     "esModuleInterop": true,
     "strict": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types" 
-    ],
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*"],
-"exclude": [
+  "exclude": [
     "node_modules",
     "dist",
     "**/*.test.ts",
@@ -21,8 +17,8 @@
     "src/**/__tests__/*",
     "tests",
     "__tests__",
-"src/tests/**/*",
+    "src/tests/**/*",
     "jest.config.js",
-    "src/tests",
+    "src/tests"
   ]
 }
