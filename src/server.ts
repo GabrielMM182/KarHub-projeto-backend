@@ -16,13 +16,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (_, res) => {
+app.get('/', (req, res) => {
   res.json({ message: "Karhub API running!" });
 });
 
 app.use('/beers', beerRouter);
 
-const swaggerDocument = YAML.load(path.join(__dirname, '..', 'swagger.yaml'));
+const swaggerDocument = YAML.load(path.resolve(__dirname ?? process.cwd(), '..', 'swagger.yaml'));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 async function startServer() {
