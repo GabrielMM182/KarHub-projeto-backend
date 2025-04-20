@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import { Beer } from '../models/Beer.schema';
 import { logger } from '../utils/logger';
+import dotenv from 'dotenv';
+import { MONGODB_URI, MONGODB_URI_PROD } from '../config/env';
 
 dotenv.config();
 
@@ -17,12 +18,16 @@ const beers = [
   { name: 'Brown ale', minTemp: 0, maxTemp: 14 },
 ];
 
+const uri = process.env.NODE_ENV === 'production' && MONGODB_URI_PROD
+  ? MONGODB_URI_PROD
+  : MONGODB_URI;
+
 async function seed() {
   try {
-    if (!process.env.MONGODB_URI) {
+    if (!uri) {
       throw new Error('MONGODB_URI not found look again in .env');
     }
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(uri);
     await Beer.deleteMany({});
     await Beer.insertMany(beers);
     logger.info('Beers seeded successfully!');
